@@ -41,46 +41,52 @@ const personPhoto = document.querySelector('#person-img');
 const personName = document.querySelector('#author');
 const jobTitle = document.querySelector('#job');
 const personReview = document.querySelector('#info');
-
-const prevBtn = document.querySelector('.prev-button');
-const nextBtn = document.querySelector('.next-button');
+const buttonContainer = document.querySelector('.button-container');
 const randomBtn = document.querySelector('.random-button');
 
-const buttonContainer = document.querySelector('.button-container');
+let currentIndex = 0;
 
-
-let currentItem = 0;
-
-const showPerson = person => {
-    const item = reviews[person]
-    personPhoto.src = item.img;
-    personName.textContent = item.name;
-    jobTitle.textContent = item.job;
-    personReview.textContent = item.text;
+const generatePerson = person => {
+  const item = reviews[person]
+  personPhoto.src = item.img;
+  personName.textContent = item.name;
+  jobTitle.textContent = item.job;
+  personReview.textContent = item.text;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    showPerson(currentItem);
-})
+generatePerson(currentIndex);
 
 buttonContainer.addEventListener('click', event => {
-    if (event.target.classList.value === 'prev-button') {
-        currentItem--;
+    const shouldShowLastReview = event.target.classList.value === 'prev-button';
+    const shouldShowNextReview = event.target.classList.value === 'next-button';
+
+    if (shouldShowLastReview) {
+        currentIndex--;
         
-        if (currentItem < 0) {
-            currentItem = reviews.length - 1;
+        if (currentIndex < 0) {
+            currentIndex = reviews.length - 1;
         }
 
-        return showPerson(currentItem);
+        return generatePerson(currentIndex);
     }
     
-    if (event.target.classList.value === 'next-button') {
-        currentItem++;
+    if (shouldShowNextReview) {
+        currentIndex++;
 
-        if (currentItem > reviews.length - 1) {
-            currentItem = 0;
+        if (currentIndex > reviews.length - 1) {
+            currentIndex = 0;
         }
 
-        return showPerson(currentItem);
+        return generatePerson(currentIndex);
     }
+})
+
+randomBtn.addEventListener('click', () => {
+  let randomNumber = Math.floor(Math.random() * 4);
+  let lastNumber = randomNumber
+
+  while (randomNumber === lastNumber) {
+    randomNumber = Math.floor(Math.random() * 4);
+    generatePerson(randomNumber);
+  }
 })
