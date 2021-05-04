@@ -128,3 +128,7 @@ main {
     background: hsl(205, 78%, 60%);
     color: hsl(205, 86%, 17%);
 }
+
+svg {
+    pointer-events: none;
+}
